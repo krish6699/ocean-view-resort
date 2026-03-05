@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
+         https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.2.0</version>
+    </parent>
+
+    <groupId>com.oceanview</groupId>
+    <artifactId>ocean-view-resort</artifactId>
+    <version>1.0.0</version>
+    <name>Ocean View Resort</name>
+
+    <properties>
+        <java.version>21</java.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-api</artifactId>
+            <version>0.12.3</version>
+        </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-impl</artifactId>
+            <version>0.12.3</version>
+        </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-jackson</artifactId>
+            <version>0.12.3</version>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+        <sourceDirectory>src/main/java</sourceDirectory>
+    </build>
+</project>
+```
+
+---
+
+### FILE 4 — application.properties
+
+Inside the **ocean-view-resort** folder:
+
+1. Create a folder called **src**
+2. Inside src, create **main**
+3. Inside main, create **resources**
+4. Inside resources, create a file called **application.properties**
+5. Paste this inside:
+```
+spring.application.name=OceanViewResort
+spring.datasource.url=jdbc:h2:file:./oceanview_db
+spring.datasource.driver-class-name=org.h2.Driver
+spring.datasource.username=sa
+spring.datasource.password=
+spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
+spring.jpa.hibernate.ddl-auto=update
+spring.main.allow-circular-references=true
+jwt.secret=oceanviewresortsecretkey2024oceanviewresortsecretkey2024
+jwt.expiration=86400000
+```
+
+---
+
+### FILE 5 — Move Your Java File Into The Right Place
+
+Your Java file needs to be in the correct folder structure. Inside the **ocean-view-resort** folder:
+
+1. Go into **src → main**
+2. Create a folder called **java**
+3. Inside java, create a folder called **com**
+4. Inside com, create a folder called **oceanview**
+5. **Move** your **OceanViewResortApplication.java** into this **oceanview** folder
+
+---
+
+## Your Final Folder Structure Should Look Like This
+```
+ocean-view-resort/
+│
+├── README.md
+├── pom.xml
+├── .gitignore
+├── ocean_view_resort_standalone.html
+│
+└── src/
+    └── main/
+        ├── java/
+        │   └── com/
+        │       └── oceanview/
+        │           └── OceanViewResortApplication.java
+        └── resources/
+            └── application.properties
+```
+
+---
+
+## Now Upload Everything to GitHub
+
+Open **Command Prompt**, go to your folder:
+```
+cd Desktop/ocean-view-resort
+```
+
+Then type these commands **one by one**:
+```
+git add .
+```
+```
+git commit -m "init: create Spring Boot project with all source files"
+```
+```
+git push

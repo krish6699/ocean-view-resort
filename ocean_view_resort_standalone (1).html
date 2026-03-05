@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ocean View Resort — Galle, Sri Lanka</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Raleway:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+/* =============================================
+   OCEAN VIEW RESORT - Complete Standalone Site
+   CIS6003 Advanced Programming
+   Cardiff Metropolitan University
+   ============================================= */
+
+:root {
+  --navy:   #0b1d35;
+  --deep:   #0f2545;
+  --mid:    #163356;
+  --teal:   #1d7a8a;
+  --aqua:   #3ec9d6;
+  --gold:   #d4a843;
+  --gold2:  #f0c96a;
+  --cream:  #f4ede0;
+  --white:  #ffffff;
+  --glass:  rgba(255,255,255,0.07);
+  --border: rgba(255,255,255,0.13);
+  --red:    #e05555;
+  --green:  rgba(60,200,160,0.15);
+  --green-b:rgba(60,200,160,0.4);
+}
+
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; font-size:16px; }
+body { font-family:'Raleway',sans-serif; background:var(--navy); color:var(--cream); overflow-x:hidden; }
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar { width:6px; }
+::-webkit-scrollbar-track { background:var(--navy); }
+::-webkit-scrollbar-thumb { background:var(--teal); border-radius:3px; }
+
+/* ── NAVBAR ── */
+nav {
+  position:fixed; top:0; left:0; right:0; z-index:999;
+  display:flex; align-items:center; justify-content:space-between;
+  padding:1.2rem 5rem;
+  background:rgba(11,29,53,0.92);
+  backdrop-filter:blur(18px);
+  border-bottom:1px solid var(--border);
+  animation:navDrop .7s ease both;
+}
+@keyframes navDrop { from{transform:translateY(-100%);opacity:0} to{transform:translateY(0);opacity:1} }
+
+.brand { display:flex; flex-direction:column; }
+.brand-name { font-family:'Playfair Display',serif; font-size:1.3rem; font-weight:400; color:var(--gold); letter-spacing:.08em; }
+.brand-sub  { font-size:.55rem; letter-spacing:.35em; text-transform:uppercase; opacity:.5; margin-top:.1rem; }
+
+.nav-links { display:flex; gap:2rem; list-style:none; }
+.nav-links a { text-decoration:none; color:var(--cream); opacity:.65; font-size:.7rem; letter-spacing:.18em; text-transform:uppercase; transition:all .3s; }
+.nav-links a:hover { opacity:1; color:var(--gold); }
+
+.book-btn {
+  background:var(--gold); color:var(--navy); border:none;
+  padding:.6rem 1.6rem; font-family:'Raleway',sans-serif;
+  font-size:.65rem; font-weight:500; letter-spacing:.22em; text-transform:uppercase;
+  cursor:pointer; transition:all .3s;
+}
+.book-btn:hover { background:var(--gold2); transform:translateY(-1px); box-shadow:0 8px 25px rgba(212,168,67,.35); }
+
+/* ── HERO ── */
+#hero {
+  height:100vh;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  position:relative; overflow:hidden; text-align:center;
+}
+
+.hero-bg {
+  position:absolute; inset:0;
+  background:
+    radial-gradient(ellipse 80% 60% at 15% 40%, rgba(29,122,138,.18) 0%, transparent 65%),
+    radial-gradient(ellipse 60% 80% at 85% 20%, rgba(22,51,86,.6) 0%, transparent 55%),
+    linear-gradient(175deg, #0b1d35 0%, #0f2545 45%, #0b1d35 100%);
+}
+
+/* Wave animation */
+.wave-wrap { position:absolute; bottom:0; left:0; right:0; height:220px; overflow:hidden; }
+.wave-svg { position:absolute; bottom:0; left:-50%; width:200%; opacity:.25; animation:waveAnim 9s linear infinite; }
+.wave-svg:nth-child(2) { opacity:.12; animation-duration:14s; animation-direction:reverse; bottom:15px; }
+.wave-svg:nth-child(3) { opacity:.07; animation-duration:19s; bottom:30px; }
+@keyframes waveAnim { from{transform:translateX(0)} to{transform:translateX(25%)} }
+
+/* Star particles */
+.stars { position:absolute; inset:0; pointer-events:none; }
+.star { position:absolute; background:var(--aqua); border-radius:50%; opacity:0; animation:starFloat 7s ease-in-out infinite; }
+@keyframes starFloat { 0%{transform:translateY(110vh) scale(0);opacity:0} 8%{opacity:.5} 92%{opacity:.1} 100%{transform:translateY(-8vh) scale(1.2);opacity:0} }
+
+.hero-inner { position:relative; z-index:2; padding:0 1rem; }
+.hero-tag { font-size:.6rem; letter-spacing:.45em; text-transform:uppercase; color:var(--gold); opacity:0; animation:riseUp .8s .4s ease both; }
+.hero-h1 { font-family:'Playfair Display',serif; font-size:clamp(3rem,7.5vw,6.5rem); font-weight:400; line-height:1.08; margin:.9rem 0 .5rem; opacity:0; animation:riseUp .8s .65s ease both; }
+.hero-h1 em { font-style:italic; color:var(--gold); }
+.hero-divider { width:60px; height:1px; background:var(--gold); margin:.8rem auto 1.2rem; opacity:0; animation:riseUp .8s .85s ease both; }
+.hero-tagline { font-size:.8rem; letter-spacing:.2em; text-transform:uppercase; opacity:.45; margin-bottom:2.8rem; opacity:0; animation:riseUp .8s 1s ease both; }
+.hero-btns { display:flex; gap:1.2rem; justify-content:center; opacity:0; animation:riseUp .8s 1.2s ease both; }
+@keyframes riseUp { from{opacity:0;transform:translateY(28px)} to{opacity:1;transform:translateY(0)} }
+
+.btn-gold { background:var(--gold); color:var(--navy); border:none; padding:.95rem 2.8rem; font-family:'Raleway',sans-serif; font-size:.65rem; font-weight:500; letter-spacing:.25em; text-transform:uppercase; cursor:pointer; transition:all .3s; }
+.btn-gold:hover { background:var(--gold2); transform:translateY(-2px); box-shadow:0 12px 35px rgba(212,168,67,.35); }
+.btn-ghost { background:transparent; color:var(--cream); border:1px solid rgba(255,255,255,.28); padding:.95rem 2.8rem; font-family:'Raleway',sans-serif; font-size:.65rem; letter-spacing:.25em; text-transform:uppercase; cursor:pointer; transition:all .3s; }
+.btn-ghost:hover { border-color:var(--cream); background:rgba(255,255,255,.06); }
+
+.scroll-cue { position:absolute; bottom:2.2rem; left:50%; transform:translateX(-50%); z-index:2; display:flex; flex-direction:column; align-items:center; gap:.4rem; opacity:0; animation:riseUp 1s 1.8s ease both; }
+.scroll-cue span { font-size:.52rem; letter-spacing:.35em; text-transform:uppercase; opacity:.4; }
+.scroll-bar { width:1px; height:45px; background:linear-gradient(to bottom,transparent,var(--gold)); animation:pulse 2s ease-in-out infinite; }
+@keyframes pulse { 0%,100%{opacity:.3} 50%{opacity:1} }
+
+/* ── SECTION COMMONS ── */
+.section { padding:7rem 5rem; }
+.section-inner { max-width:1150px; margin:0 auto; }
+.eyebrow { font-size:.58rem; letter-spacing:.48em; text-transform:uppercase; color:var(--gold); display:block; margin-bottom:.8rem; }
+.big-title { font-family:'Playfair Display',serif; font-size:clamp(2.2rem,4.5vw,3.6rem); font-weight:400; line-height:1.18; }
+.big-title em { font-style:italic; color:var(--gold); }
+
+/* ── ROOMS ── */
+#rooms { background:var(--navy); }
+.rooms-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1.5rem; margin-top:3.5rem; }
+.room-card-feature {
+  background:var(--glass); border:1px solid var(--border);
+  padding:2.2rem 1.8rem; position:relative; overflow:hidden; transition:all .4s;
+}
+.room-card-feature::after { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:linear-gradient(90deg,transparent,var(--gold),transparent); transform:scaleX(0); transition:transform .4s; }
+.room-card-feature:hover { background:rgba(255,255,255,.1); transform:translateY(-4px); box-shadow:0 20px 50px rgba(0,0,0,.3); }
+.room-card-feature:hover::after { transform:scaleX(1); }
+.rc-tag { font-size:.58rem; letter-spacing:.22em; text-transform:uppercase; color:var(--gold); }
+.rc-name { font-family:'Playfair Display',serif; font-size:1.5rem; margin:.4rem 0 .8rem; }
+.rc-price { font-size:.75rem; opacity:.5; margin-bottom:1.2rem; }
+.rc-desc { font-size:.72rem; opacity:.5; line-height:1.85; margin-bottom:1.4rem; }
+.rc-list { list-style:none; }
+.rc-list li { font-size:.65rem; opacity:.5; padding:.28rem 0; border-bottom:1px solid rgba(255,255,255,.06); }
+.rc-list li::before { content:'— '; color:var(--gold); }
+
+/* ── RESERVATION ── */
+#reservation { background:var(--deep); border-top:1px solid var(--border); border-bottom:1px solid var(--border); }
+.res-header { text-align:center; margin-bottom:3.5rem; }
+
+/* Login box */
+#loginBox {
+  max-width:420px; margin:0 auto;
+  background:var(--glass); border:1px solid var(--border);
+  padding:2.8rem; backdrop-filter:blur(12px);
+}
+.login-h { font-family:'Playfair Display',serif; font-size:1.7rem; text-align:center; margin-bottom:.4rem; }
+.login-s { font-size:.62rem; letter-spacing:.22em; opacity:.45; text-align:center; margin-bottom:2.2rem; }
+
+/* Form elements */
+.fg { margin-bottom:1.3rem; }
+.fg label { display:block; font-size:.58rem; letter-spacing:.22em; text-transform:uppercase; opacity:.55; margin-bottom:.45rem; }
+.fg input, .fg select, .fg textarea {
+  width:100%; background:rgba(255,255,255,.06);
+  border:1px solid var(--border); color:var(--cream);
+  padding:.85rem 1rem; font-family:'Raleway',sans-serif;
+  font-size:.78rem; outline:none; transition:border-color .3s;
+}
+.fg input:focus,.fg select:focus,.fg textarea:focus { border-color:var(--gold); }
+.fg input::placeholder { opacity:.3; color:var(--cream); }
+.fg select option { background:var(--deep); }
+.fg textarea { resize:vertical; }
+.btn-block { width:100%; padding:.95rem; margin-top:.4rem; }
+
+.err { color:var(--red); font-size:.63rem; margin-top:.4rem; display:none; }
+.err.on { display:block; }
+.info { font-size:.58rem; text-align:center; opacity:.38; margin-top:.9rem; }
+.spin { font-size:.63rem; opacity:.45; margin-top:.4rem; display:none; letter-spacing:.1em; }
+.spin.on { display:block; }
+
+/* Main system */
+#sysPanel { display:none; }
+.sys-bar { display:flex; justify-content:space-between; align-items:center; margin-bottom:2.5rem; padding-bottom:1.3rem; border-bottom:1px solid var(--border); }
+.sys-greet { font-size:.65rem; opacity:.5; letter-spacing:.15em; }
+.sys-name { font-family:'Playfair Display',serif; font-size:1.3rem; }
+.btn-out { background:transparent; border:1px solid rgba(255,255,255,.2); color:var(--cream); padding:.45rem 1.1rem; font-family:'Raleway',sans-serif; font-size:.58rem; letter-spacing:.2em; text-transform:uppercase; cursor:pointer; transition:all .3s; }
+.btn-out:hover { border-color:var(--red); color:var(--red); }
+
+/* Tabs */
+.tabs { display:flex; border:1px solid var(--border); margin-bottom:2.8rem; overflow:hidden; }
+.tab { flex:1; background:transparent; border:none; border-right:1px solid var(--border); color:var(--cream); padding:.9rem .4rem; font-family:'Raleway',sans-serif; font-size:.53rem; letter-spacing:.18em; text-transform:uppercase; cursor:pointer; transition:all .3s; opacity:.48; }
+.tab:last-child { border-right:none; }
+.tab:hover { opacity:.8; background:var(--glass); }
+.tab.on { background:var(--gold); color:var(--navy); opacity:1; }
+.tab-ico { display:block; font-size:1.1rem; margin-bottom:.25rem; }
+
+.pane { display:none; animation:fadeIn .35s ease; }
+.pane.on { display:block; }
+@keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+.pane-title { font-family:'Playfair Display',serif; font-size:1.7rem; font-weight:400; margin-bottom:1.8rem; }
+
+/* Form grid */
+.fg-grid { display:grid; grid-template-columns:1fr 1fr; gap:1.3rem; }
+.fg-grid .col2 { grid-column:span 2; }
+
+/* Room selector */
+.room-pick { display:grid; grid-template-columns:repeat(3,1fr); gap:.9rem; margin:1rem 0 1.3rem; }
+.rpick { border:1px solid var(--border); padding:1.1rem; cursor:pointer; transition:all .3s; background:var(--glass); position:relative; }
+.rpick:hover { border-color:var(--gold); }
+.rpick.sel { border-color:var(--gold); background:rgba(212,168,67,.09); }
+.rpick.sel::after { content:'✓'; position:absolute; top:.45rem; right:.65rem; color:var(--gold); font-size:.75rem; }
+.rpick-tag { font-size:.58rem; letter-spacing:.2em; text-transform:uppercase; color:var(--gold); }
+.rpick-name { font-family:'Playfair Display',serif; font-size:1rem; margin:.25rem 0; }
+.rpick-price { font-size:.65rem; opacity:.55; }
+.field-tag { display:block; font-size:.58rem; letter-spacing:.22em; text-transform:uppercase; opacity:.55; margin-bottom:.7rem; }
+
+/* Success */
+.ok-box { background:var(--green); border:1px solid var(--green-b); padding:1.3rem 1.8rem; display:none; margin-top:1.4rem; }
+.ok-box.on { display:block; animation:fadeIn .4s ease; }
+.ok-code { font-family:'Playfair Display',serif; font-size:1.7rem; color:var(--aqua); }
+.ok-box p { font-size:.7rem; opacity:.75; }
+
+/* Search bar */
+.sbar { display:flex; margin-bottom:1.8rem; }
+.sbar input { flex:1; background:rgba(255,255,255,.06); border:1px solid var(--border); border-right:none; color:var(--cream); padding:.85rem 1rem; font-family:'Raleway',sans-serif; font-size:.78rem; outline:none; transition:border-color .3s; }
+.sbar input:focus { border-color:var(--gold); }
+.sbar input::placeholder { opacity:.3; color:var(--cream); }
+.sbtn { background:var(--gold); color:var(--navy); border:none; padding:.85rem 1.4rem; font-family:'Raleway',sans-serif; font-size:.62rem; letter-spacing:.2em; text-transform:uppercase; cursor:pointer; white-space:nowrap; }
+
+/* Result card */
+.rcard { background:var(--glass); border:1px solid var(--border); padding:1.8rem; display:none; }
+.rcard.on { display:block; animation:fadeIn .4s ease; }
+.rcard-top { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:1.4rem; }
+.rcard-id { font-family:'Playfair Display',serif; font-size:1.9rem; color:var(--gold); }
+.rcard-badge { font-size:.52rem; letter-spacing:.2em; text-transform:uppercase; background:rgba(62,201,214,.13); border:1px solid rgba(62,201,214,.3); color:var(--aqua); padding:.28rem .75rem; }
+.rcard-grid { display:grid; grid-template-columns:1fr 1fr; gap:.9rem; }
+.ri label { display:block; font-size:.52rem; letter-spacing:.22em; text-transform:uppercase; opacity:.38; margin-bottom:.18rem; }
+.ri span { font-size:.88rem; }
+
+/* Bill */
+.bill-wrap { max-width:580px; background:var(--glass); border:1px solid var(--border); padding:2.3rem; display:none; }
+.bill-wrap.on { display:block; animation:fadeIn .4s ease; }
+.bill-top { text-align:center; padding-bottom:1.3rem; border-bottom:1px solid var(--border); margin-bottom:1.3rem; }
+.bill-name { font-family:'Playfair Display',serif; font-size:1.4rem; color:var(--gold); }
+.bill-addr { font-size:.58rem; opacity:.45; margin-top:.2rem; }
+.bill-gen { font-size:.55rem; opacity:.35; margin-top:.35rem; }
+.brow { display:flex; justify-content:space-between; padding:.55rem 0; border-bottom:1px solid rgba(255,255,255,.05); font-size:.72rem; }
+.brow label { opacity:.55; }
+.brow.btotal { border-top:1px solid var(--gold); border-bottom:none; padding-top:.9rem; margin-top:.4rem; font-size:.95rem; color:var(--gold); }
+
+/* Help */
+.help-grid { display:grid; grid-template-columns:1fr 1fr; gap:1.3rem; }
+.hcard { background:var(--glass); border:1px solid var(--border); padding:1.6rem; transition:border-color .3s; }
+.hcard:hover { border-color:var(--gold); }
+.hnum { font-family:'Playfair Display',serif; font-size:2.8rem; color:rgba(212,168,67,.18); line-height:1; margin-bottom:.4rem; }
+.htitle { font-size:.65rem; letter-spacing:.2em; text-transform:uppercase; color:var(--gold); margin-bottom:.7rem; }
+.htext { font-size:.7rem; opacity:.55; line-height:1.85; }
+
+/* ── CONTACT STRIP ── */
+.cstrip { background:var(--teal); padding:2.8rem 5rem; display:flex; justify-content:space-between; align-items:center; }
+.cstrip-text h3 { font-family:'Playfair Display',serif; font-size:1.8rem; font-weight:400; }
+.cstrip-text p { font-size:.68rem; opacity:.7; margin-top:.3rem; }
+.cstrip-info { display:flex; gap:3rem; }
+.ci label { display:block; font-size:.52rem; letter-spacing:.25em; text-transform:uppercase; opacity:.6; margin-bottom:.15rem; }
+.ci span { font-size:.82rem; }
+
+/* ── FOOTER ── */
+footer { background:#05101e; border-top:1px solid var(--border); padding:3.5rem 5rem; display:grid; grid-template-columns:2fr 1fr 1fr 1fr; gap:3rem; }
+.fb .flogo { font-family:'Playfair Display',serif; font-size:1.5rem; color:var(--gold); }
+.fb p { font-size:.68rem; opacity:.38; line-height:1.9; margin-top:.9rem; max-width:240px; }
+.fc h4 { font-size:.58rem; letter-spacing:.3em; text-transform:uppercase; color:var(--gold); margin-bottom:1.3rem; }
+.fc ul { list-style:none; }
+.fc li { margin-bottom:.7rem; }
+.fc a { font-size:.7rem; opacity:.38; text-decoration:none; color:var(--cream); transition:opacity .3s; }
+.fc a:hover { opacity:.85; }
+.fbot { background:#05101e; border-top:1px solid rgba(255,255,255,.05); padding:1.3rem 5rem; display:flex; justify-content:space-between; }
+.fbot p { font-size:.58rem; opacity:.28; }
+
+/* ── RESPONSIVE ── */
+@media(max-width:950px) {
+  nav { padding:1.1rem 1.5rem; } .nav-links{display:none;}
+  .section{padding:5rem 1.5rem;}
+  .rooms-grid,.fg-grid,.help-grid,.room-pick{grid-template-columns:1fr;}
+  .fg-grid .col2{grid-column:span 1;}
+  footer{grid-template-columns:1fr 1fr;padding:2.5rem 1.5rem;}
+  .cstrip{flex-direction:column;gap:1.8rem;padding:2.5rem 1.5rem;}
+  .cstrip-info{flex-direction:column;gap:1rem;}
+  .tabs{flex-wrap:wrap;} .tab{flex:1 1 45%;}
+  .rcard-grid{grid-template-columns:1fr;}
+  .fbot{padding:1.3rem 1.5rem;flex-direction:column;gap:.5rem;}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════ NAVBAR -->
+<nav>
+  <div class="brand">
+    <div class="brand-name">Ocean View Resort</div>
+    <div class="brand-sub">Galle · Sri Lanka</div>
+  </div>
+  <ul class="nav-links">
+    <li><a href="#hero">Home</a></li>
+    <li><a href="#rooms">Rooms</a></li>
+    <li><a href="#reservation">Reserve</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <button class="book-btn" onclick="scrollTo('#reservation')">Book Now</button>
+</nav>
+
+<!-- ═══════════════════════════════════ HERO -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="stars" id="stars"></div>
+  <div class="wave-wrap">
+    <svg class="wave-svg" viewBox="0 0 1440 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><path fill="#1d7a8a" d="M0,40 C240,80 480,0 720,40 C960,80 1200,0 1440,40 L1440,80 L0,80 Z"/></svg>
+    <svg class="wave-svg" viewBox="0 0 1440 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><path fill="#163356" d="M0,50 C300,10 600,70 900,30 C1100,10 1280,60 1440,40 L1440,80 L0,80 Z"/></svg>
+    <svg class="wave-svg" viewBox="0 0 1440 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><path fill="#0f2545" d="M0,30 C360,70 720,10 1080,50 C1260,70 1380,30 1440,50 L1440,80 L0,80 Z"/></svg>
+  </div>
+  <div class="hero-inner">
+    <p class="hero-tag">Est. 1987 · Beachside Luxury · Galle Fort</p>
+    <h1 class="hero-h1">Ocean <em>View</em><br>Resort</h1>
+    <div class="hero-divider"></div>
+    <p class="hero-tagline">Where the Indian Ocean meets timeless elegance</p>
+    <div class="hero-btns">
+      <button class="btn-gold" onclick="scrollTo('#reservation')">Reserve a Room</button>
+      <button class="btn-ghost" onclick="scrollTo('#rooms')">Explore Rooms</button>
+    </div>
+  </div>
+  <div class="scroll-cue"><span>Discover</span><div class="scroll-bar"></div></div>
+</section>
+
+<!-- ═══════════════════════════════════ ROOMS -->
+<section id="rooms" class="section">
+  <div class="section-inner">
+    <span class="eyebrow">Accommodations</span>
+    <h2 class="big-title">Rooms crafted for an <em>unforgettable</em> stay</h2>
+    <div class="rooms-grid">
+      <div class="room-card-feature">
+        <div class="rc-tag">Standard</div>
+        <div class="rc-name">Standard Room</div>
+        <div class="rc-price">LKR 15,000 per night</div>
+        <div class="rc-desc">Elegant comfort with serene garden views. Ideal for solo travellers and couples seeking a peaceful retreat by the sea.</div>
+        <ul class="rc-list"><li>Queen-size bed</li><li>Air conditioning</li><li>Private en-suite bathroom</li><li>Complimentary Wi-Fi</li><li>Daily housekeeping</li><li>Flat-screen TV</li></ul>
+      </div>
+      <div class="room-card-feature">
+        <div class="rc-tag">Deluxe</div>
+        <div class="rc-name">Deluxe Ocean Room</div>
+        <div class="rc-price">LKR 25,000 per night</div>
+        <div class="rc-desc">Wake to panoramic ocean views from your private balcony. Spacious interiors adorned with premium coastal furnishings.</div>
+        <ul class="rc-list"><li>King-size bed</li><li>Private balcony with ocean view</li><li>Minibar & in-room safe</li><li>Premium bath amenities</li><li>Nespresso machine</li><li>Turndown service</li></ul>
+      </div>
+      <div class="room-card-feature">
+        <div class="rc-tag">Presidential</div>
+        <div class="rc-name">Presidential Suite</div>
+        <div class="rc-price">LKR 45,000 per night</div>
+        <div class="rc-desc">The pinnacle of coastal luxury. A sprawling suite featuring a private plunge pool and breathtaking 270° ocean vistas.</div>
+        <ul class="rc-list"><li>Two king-size bedrooms</li><li>Private plunge pool</li><li>Dedicated butler service</li><li>Jacuzzi & steam room</li><li>Personal concierge 24/7</li><li>Complimentary airport transfer</li></ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════ RESERVATION -->
+<section id="reservation" class="section">
+  <div class="section-inner">
+    <div class="res-header">
+      <span class="eyebrow">Online Reservation System</span>
+      <h2 class="big-title">Manage your <em>booking</em></h2>
+    </div>
+
+    <!-- LOGIN BOX -->
+    <div id="loginBox">
+      <div class="login-h">Staff Portal</div>
+      <div class="login-s">Secure Access · Ocean View Resort</div>
+      <div class="fg"><label>Username</label><input type="text" id="lu" placeholder="Enter your username"></div>
+      <div class="fg"><label>Password</label><input type="password" id="lp" placeholder="Enter your password"></div>
+      <div class="err" id="lerr">Invalid username or password. Please try again.</div>
+      <div class="spin" id="lspin">Authenticating...</div>
+      <button class="btn-gold btn-block" onclick="doLogin()">Sign In</button>
+      <div class="info">Demo credentials: <strong>admin</strong> / <strong>ocean123</strong></div>
+    </div>
+
+    <!-- MAIN PANEL -->
+    <div id="sysPanel">
+      <div class="sys-bar">
+        <div>
+          <div class="sys-greet">Welcome back,</div>
+          <div class="sys-name" id="sysName">Administrator</div>
+        </div>
+        <button class="btn-out" onclick="doLogout()">Sign Out</button>
+      </div>
+
+      <!-- TABS -->
+      <div class="tabs">
+        <button class="tab on" onclick="openTab('tadd',this)"><span class="tab-ico">＋</span>New Reservation</button>
+        <button class="tab" onclick="openTab('tview',this)"><span class="tab-ico">◎</span>View Booking</button>
+        <button class="tab" onclick="openTab('tbill',this)"><span class="tab-ico">◈</span>Calculate Bill</button>
+        <button class="tab" onclick="openTab('thelp',this)"><span class="tab-ico">❓</span>Help</button>
+      </div>
+
+      <!-- ── NEW RESERVATION ── -->
+      <div id="tadd" class="pane on">
+        <div class="pane-title">New Reservation</div>
+        <div class="fg-grid">
+          <div class="fg"><label>Guest Full Name *</label><input type="text" id="rName" placeholder="e.g. Kamal Perera"></div>
+          <div class="fg"><label>Contact Number *</label><input type="tel" id="rPhone" placeholder="+94 77 000 0000"></div>
+          <div class="fg col2"><label>Home Address *</label><input type="text" id="rAddr" placeholder="Street, City, Country"></div>
+          <div class="fg"><label>NIC / Passport Number *</label><input type="text" id="rNIC" placeholder="ID number"></div>
+          <div class="fg"><label>Email Address</label><input type="email" id="rEmail" placeholder="guest@email.com"></div>
+          <div class="fg"><label>Check-in Date *</label><input type="date" id="rIn"></div>
+          <div class="fg"><label>Check-out Date *</label><input type="date" id="rOut"></div>
+          <div class="fg col2">
+            <span class="field-tag">Select Room Type *</span>
+            <div class="room-pick">
+              <div class="rpick" onclick="pickRoom(this,'STANDARD')"><div class="rpick-tag">Standard</div><div class="rpick-name">Standard Room</div><div class="rpick-price">LKR 15,000 / night</div></div>
+              <div class="rpick" onclick="pickRoom(this,'DELUXE')"><div class="rpick-tag">Deluxe</div><div class="rpick-name">Deluxe Ocean Room</div><div class="rpick-price">LKR 25,000 / night</div></div>
+              <div class="rpick" onclick="pickRoom(this,'PRESIDENTIAL')"><div class="rpick-tag">Presidential</div><div class="rpick-name">Presidential Suite</div><div class="rpick-price">LKR 45,000 / night</div></div>
+            </div>
+            <input type="hidden" id="rRoom">
+          </div>
+          <div class="fg col2"><label>Special Requests</label><textarea id="rSpecial" rows="3" placeholder="Any special requirements or preferences..."></textarea></div>
+        </div>
+        <div class="err" id="addErr">Please fill in all required fields and select a room type.</div>
+        <div class="spin" id="addSpin">Saving reservation...</div>
+        <button class="btn-gold" onclick="addRes()">Confirm Reservation</button>
+        <div class="ok-box" id="addOk">
+          <p style="margin-bottom:.4rem">✅ Reservation confirmed successfully!</p>
+          <div class="ok-code" id="okCode"></div>
+          <p style="margin-top:.3rem;font-size:.65rem">Please note this number — you will need it to view details or generate a bill.</p>
+        </div>
+      </div>
+
+      <!-- ── VIEW BOOKING ── -->
+      <div id="tview" class="pane">
+        <div class="pane-title">View Reservation</div>
+        <div class="sbar">
+          <input type="text" id="vNum" placeholder="Enter reservation number  e.g. OVR-001">
+          <button class="sbtn" onclick="viewRes()">Search</button>
+        </div>
+        <div class="err" id="vErr">Reservation not found. Please check the number and try again.</div>
+        <div class="spin" id="vSpin">Searching...</div>
+        <div class="rcard" id="rcard">
+          <div class="rcard-top">
+            <div><div class="rcard-id" id="vc-num"></div><div style="font-size:.6rem;opacity:.45;margin-top:.15rem">Reservation Number</div></div>
+            <div class="rcard-badge" id="vc-status">CONFIRMED</div>
+          </div>
+          <div class="rcard-grid">
+            <div class="ri"><label>Guest Name</label><span id="vc-name"></span></div>
+            <div class="ri"><label>Contact Number</label><span id="vc-phone"></span></div>
+            <div class="ri"><label>Address</label><span id="vc-addr"></span></div>
+            <div class="ri"><label>NIC / Passport</label><span id="vc-nic"></span></div>
+            <div class="ri"><label>Room Type</label><span id="vc-room"></span></div>
+            <div class="ri"><label>Rate per Night</label><span id="vc-rate"></span></div>
+            <div class="ri"><label>Check-in Date</label><span id="vc-in"></span></div>
+            <div class="ri"><label>Check-out Date</label><span id="vc-out"></span></div>
+            <div class="ri"><label>Number of Nights</label><span id="vc-nights"></span></div>
+            <div class="ri"><label>Special Requests</label><span id="vc-special"></span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── CALCULATE BILL ── -->
+      <div id="tbill" class="pane">
+        <div class="pane-title">Calculate & Print Bill</div>
+        <div class="sbar" style="max-width:480px">
+          <input type="text" id="bNum" placeholder="Enter reservation number">
+          <button class="sbtn" onclick="genBill()">Generate Bill</button>
+        </div>
+        <div class="err" id="bErr">Reservation not found.</div>
+        <div class="spin" id="bSpin">Calculating...</div>
+        <div class="bill-wrap" id="billWrap">
+          <div class="bill-top">
+            <div class="bill-name">Ocean View Resort</div>
+            <div class="bill-addr">42 Marine Drive, Galle Fort, Sri Lanka · +94 91 222 3456</div>
+            <div class="bill-gen" id="b-gen"></div>
+          </div>
+          <div class="brow"><label>Reservation No.</label><span id="b-num"></span></div>
+          <div class="brow"><label>Guest Name</label><span id="b-guest"></span></div>
+          <div class="brow"><label>Room Type</label><span id="b-room"></span></div>
+          <div class="brow"><label>Check-in Date</label><span id="b-in"></span></div>
+          <div class="brow"><label>Check-out Date</label><span id="b-out"></span></div>
+          <div class="brow"><label>Number of Nights</label><span id="b-nights"></span></div>
+          <div class="brow"><label>Rate per Night</label><span id="b-rate"></span></div>
+          <div class="brow"><label>Subtotal</label><span id="b-sub"></span></div>
+          <div class="brow"><label>Government Tax (15%)</label><span id="b-tax"></span></div>
+          <div class="brow btotal"><label>TOTAL AMOUNT DUE</label><span id="b-total"></span></div>
+          <button class="btn-gold" style="margin-top:1.4rem;width:100%" onclick="window.print()">🖨 Print Bill</button>
+        </div>
+      </div>
+
+      <!-- ── HELP ── -->
+      <div id="thelp" class="pane">
+        <div class="pane-title">Help & User Guide</div>
+        <p style="font-size:.73rem;opacity:.5;line-height:1.9;margin-bottom:2rem">Welcome to the Ocean View Resort Reservation Management System. This guide will help new staff members use the system effectively.</p>
+        <div class="help-grid">
+          <div class="hcard"><div class="hnum">01</div><div class="htitle">Creating a New Reservation</div><div class="htext">Click the New Reservation tab. Complete all fields marked with an asterisk (*). Select the desired room type by clicking on it. Click Confirm Reservation — a unique OVR-XXX number will be automatically generated and displayed.</div></div>
+          <div class="hcard"><div class="hnum">02</div><div class="htitle">Viewing a Booking</div><div class="htext">Navigate to the View Booking tab. Enter the guest's reservation number in the format OVR-001. Click Search to retrieve and display the complete booking information including guest details and room information.</div></div>
+          <div class="hcard"><div class="hnum">03</div><div class="htitle">Generating a Bill</div><div class="htext">Go to the Calculate Bill tab. Enter the reservation number and click Generate Bill. The system automatically calculates the total cost based on the number of nights multiplied by the room rate, plus 15% government tax.</div></div>
+          <div class="hcard"><div class="hnum">04</div><div class="htitle">Room Rates & Types</div><div class="htext">Standard Room: LKR 15,000 per night. Deluxe Ocean Room: LKR 25,000 per night. Presidential Suite: LKR 45,000 per night. All rates are subject to 15% government taxes and service charges.</div></div>
+          <div class="hcard"><div class="hnum">05</div><div class="htitle">Validation & Rules</div><div class="htext">All fields marked * are mandatory. Check-out date must always be after the check-in date. Contact numbers must include the country code (+94). A valid NIC or passport number is required for every guest registration.</div></div>
+          <div class="hcard"><div class="hnum">06</div><div class="htitle">System Security</div><div class="htext">Always sign out after completing your session, especially on shared computers. Never share your login credentials with others. For password resets or technical issues, contact the IT department at it@oceanviewresort.lk or ext. 201.</div></div>
+        </div>
+      </div>
+
+    </div><!-- /sysPanel -->
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════ CONTACT -->
+<div id="contact" class="cstrip">
+  <div class="cstrip-text">
+    <h3>Get in Touch</h3>
+    <p>Our team is ready to make your stay extraordinary</p>
+  </div>
+  <div class="cstrip-info">
+    <div class="ci"><label>Address</label><span>42 Marine Drive, Galle Fort</span></div>
+    <div class="ci"><label>Telephone</label><span>+94 91 222 3456</span></div>
+    <div class="ci"><label>Email</label><span>reservations@oceanviewresort.lk</span></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════ FOOTER -->
+<footer>
+  <div class="fb">
+    <div class="flogo">Ocean View Resort</div>
+    <p>A treasured beachside retreat in historic Galle, offering world-class hospitality paired with the warmth of Sri Lanka since 1987.</p>
+  </div>
+  <div class="fc"><h4>Navigate</h4><ul><li><a href="#hero">Home</a></li><li><a href="#rooms">Rooms</a></li><li><a href="#reservation">Reservations</a></li><li><a href="#contact">Contact</a></li></ul></div>
+  <div class="fc"><h4>Facilities</h4><ul><li><a href="#">Restaurant & Bar</a></li><li><a href="#">Spa & Wellness</a></li><li><a href="#">Water Sports</a></li><li><a href="#">Conference Hall</a></li></ul></div>
+  <div class="fc"><h4>Policies</h4><ul><li><a href="#">Check-in: 2:00 PM</a></li><li><a href="#">Check-out: 11:00 AM</a></li><li><a href="#">Cancellation Policy</a></li><li><a href="#">Privacy Policy</a></li></ul></div>
+</footer>
+<div class="fbot">
+  <p>© 2025 Ocean View Resort, Galle, Sri Lanka. All rights reserved.</p>
+  <p>CIS6003 Advanced Programming · Cardiff Metropolitan University</p>
+</div>
+
+<!-- ═══════════════════════════════════ JAVASCRIPT -->
+<script>
+
+// ── Floating star particles ──────────────────────────
+(function(){
+  const c = document.getElementById('stars');
+  for(let i=0;i<18;i++){
+    const s = document.createElement('div');
+    s.className = 'star';
+    s.style.cssText = `left:${Math.random()*100}%;width:${1.5+Math.random()*3.5}px;height:${1.5+Math.random()*3.5}px;animation-delay:${Math.random()*7}s;animation-duration:${5+Math.random()*6}s;`;
+    c.appendChild(s);
+  }
+})();
+
+// ── Smooth scroll helper ─────────────────────────────
+function scrollTo(id){ document.querySelector(id).scrollIntoView({behavior:'smooth'}); }
+
+// ── Set min dates ────────────────────────────────────
+const tod = new Date().toISOString().split('T')[0];
+document.getElementById('rIn').min  = tod;
+document.getElementById('rOut').min = tod;
+document.getElementById('rIn').addEventListener('change', function(){ document.getElementById('rOut').min = this.value; });
+
+// ── In-memory reservation store ──────────────────────
+// NOTE: When Spring Boot is running, this auto-connects to the backend.
+// If Spring Boot is NOT running, it falls back to local memory storage.
+const API = 'http://localhost:8080/api';
+let token = '';
+let DB = {}; // local fallback storage
+let counter = 1;
+const RATES = { STANDARD:15000, DELUXE:25000, PRESIDENTIAL:45000 };
+
+// ── LOGIN ─────────────────────────────────────────────
+async function doLogin(){
+  const u = document.getElementById('lu').value.trim();
+  const p = document.getElementById('lp').value.trim();
+  const err  = document.getElementById('lerr');
+  const spin = document.getElementById('lspin');
+  if(!u||!p){ show(err,'Please enter both username and password.'); return; }
+  hide(err); show(spin,'Authenticating...');
+
+  // Try backend first
+  try {
+    const res = await fetch(`${API}/auth/login`,{ method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({username:u,password:p}), signal:AbortSignal.timeout(3000) });
+    const data = await res.json();
+    hide(spin);
+    if(data.token){
+      token = data.token;
+      openSystem(data.fullName || u);
+      return;
+    }
+  } catch(e) { /* backend not running, use local auth */ }
+
+  hide(spin);
+  // Local fallback auth
+  if(u==='admin' && p==='ocean123'){ openSystem('Administrator'); }
+  else if(u==='staff' && p==='staff123'){ openSystem('Front Desk Staff'); }
+  else { show(err,'Invalid credentials. Try admin / ocean123'); }
+}
+
+function openSystem(name){
+  document.getElementById('loginBox').style.display='none';
+  document.getElementById('sysPanel').style.display='block';
+  document.getElementById('sysName').textContent = name;
+}
+
+function doLogout(){
+  token='';
+  document.getElementById('sysPanel').style.display='none';
+  document.getElementById('loginBox').style.display='block';
+  document.getElementById('lu').value='';
+  document.getElementById('lp').value='';
+}
+
+document.getElementById('lp').addEventListener('keypress',e=>{ if(e.key==='Enter') doLogin(); });
+
+// ── TABS ──────────────────────────────────────────────
+function openTab(id, btn){
+  document.querySelectorAll('.pane').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.tab').forEach(b=>b.classList.remove('on'));
+  document.getElementById(id).classList.add('on');
+  btn.classList.add('on');
+}
+
+// ── ROOM SELECTION ────────────────────────────────────
+function pickRoom(el, type){
+  document.querySelectorAll('.rpick').forEach(r=>r.classList.remove('sel'));
+  el.classList.add('sel');
+  document.getElementById('rRoom').value = type;
+}
+
+// ── ADD RESERVATION ───────────────────────────────────
+async function addRes(){
+  const name  = document.getElementById('rName').value.trim();
+  const phone = document.getElementById('rPhone').value.trim();
+  const addr  = document.getElementById('rAddr').value.trim();
+  const nic   = document.getElementById('rNIC').value.trim();
+  const cin   = document.getElementById('rIn').value;
+  const cout  = document.getElementById('rOut').value;
+  const room  = document.getElementById('rRoom').value;
+  const spec  = document.getElementById('rSpecial').value;
+  const err   = document.getElementById('addErr');
+  const spin  = document.getElementById('addSpin');
+
+  if(!name||!phone||!addr||!nic||!cin||!cout||!room){
+    show(err,'Please fill in all required fields and select a room type.'); return;
+  }
+  if(new Date(cout)<=new Date(cin)){
+    show(err,'Check-out date must be after the check-in date.'); return;
+  }
+  hide(err); show(spin,'Saving reservation...');
+
+  // Try backend
+  if(token){
+    try {
+      const res = await fetch(`${API}/reservations`,{ method:'POST', headers:{'Content-Type':'application/json','Authorization':`Bearer ${token}`}, body:JSON.stringify({guestName:name,contactNumber:phone,address:addr,nicOrPassport:nic,checkInDate:cin,checkOutDate:cout,roomType:room,specialRequests:spec}), signal:AbortSignal.timeout(4000) });
+      const data = await res.json();
+      hide(spin);
+      if(data.reservationNumber){ showSuccess(data.reservationNumber); return; }
+    } catch(e){ /* fallback */ }
+  }
+
+  hide(spin);
+  // Local fallback
+  const num = `OVR-${String(counter++).padStart(3,'0')}`;
+  DB[num] = { num, name, phone, addr, nic, cin, cout, room, spec, rate:RATES[room], status:'CONFIRMED' };
+  showSuccess(num);
+}
+
+function showSuccess(num){
+  document.getElementById('okCode').textContent = num;
+  document.getElementById('addOk').classList.add('on');
+  ['rName','rPhone','rAddr','rNIC','rIn','rOut','rSpecial'].forEach(id=>document.getElementById(id).value='');
+  document.querySelectorAll('.rpick').forEach(r=>r.classList.remove('sel'));
+  document.getElementById('rRoom').value='';
+}
+
+// ── VIEW RESERVATION ──────────────────────────────────
+async function viewRes(){
+  const num  = document.getElementById('vNum').value.trim().toUpperCase();
+  const err  = document.getElementById('vErr');
+  const spin = document.getElementById('vSpin');
+  const card = document.getElementById('rcard');
+  if(!num){ show(err,'Please enter a reservation number.'); return; }
+  hide(err); card.classList.remove('on'); show(spin,'Searching...');
+
+  let d = null;
+
+  // Try backend
+  if(token){
+    try {
+      const res = await fetch(`${API}/reservations/${num}`,{ headers:{'Authorization':`Bearer ${token}`}, signal:AbortSignal.timeout(4000) });
+      const data = await res.json();
+      if(data.reservationNumber) d = { num:data.reservationNumber, name:data.guestName, phone:data.contactNumber, addr:data.address, nic:data.nicOrPassport, room:data.roomType, rate:data.ratePerNight, cin:data.checkInDate, cout:data.checkOutDate, nights:data.numberOfNights, spec:data.specialRequests||'—', status:data.status };
+    } catch(e){ /* fallback */ }
+  }
+
+  // Local fallback
+  if(!d && DB[num]) {
+    const r = DB[num];
+    const nights = Math.max(1,Math.round((new Date(r.cout)-new Date(r.cin))/(86400000)));
+    d = { ...r, nights };
+  }
+
+  hide(spin);
+  if(!d){ show(err,'Reservation not found. Please check the number.'); return; }
+
+  document.getElementById('vc-num').textContent    = d.num;
+  document.getElementById('vc-name').textContent   = d.name;
+  document.getElementById('vc-phone').textContent  = d.phone;
+  document.getElementById('vc-addr').textContent   = d.addr;
+  document.getElementById('vc-nic').textContent    = d.nic;
+  document.getElementById('vc-room').textContent   = d.room;
+  document.getElementById('vc-rate').textContent   = 'LKR '+Number(d.rate).toLocaleString();
+  document.getElementById('vc-in').textContent     = d.cin;
+  document.getElementById('vc-out').textContent    = d.cout;
+  document.getElementById('vc-nights').textContent = d.nights+' night(s)';
+  document.getElementById('vc-special').textContent= d.spec||'—';
+  document.getElementById('vc-status').textContent = d.status||'CONFIRMED';
+  card.classList.add('on');
+}
+
+// ── GENERATE BILL ─────────────────────────────────────
+async function genBill(){
+  const num  = document.getElementById('bNum').value.trim().toUpperCase();
+  const err  = document.getElementById('bErr');
+  const spin = document.getElementById('bSpin');
+  const wrap = document.getElementById('billWrap');
+  if(!num){ show(err,'Please enter a reservation number.'); return; }
+  hide(err); wrap.classList.remove('on'); show(spin,'Calculating...');
+
+  let d = null;
+
+  // Try backend
+  if(token){
+    try {
+      const res = await fetch(`${API}/reservations/${num}/bill`,{ headers:{'Authorization':`Bearer ${token}`}, signal:AbortSignal.timeout(4000) });
+      const data = await res.json();
+      if(data.reservationNumber) d = { num:data.reservationNumber, name:data.guestName, room:data.roomType, cin:data.checkInDate, cout:data.checkOutDate, nights:data.numberOfNights, rate:data.ratePerNight, sub:data.subtotal, tax:data.taxAmount, total:data.totalAmount, gen:data.generatedAt };
+    } catch(e){ /* fallback */ }
+  }
+
+  // Local fallback
+  if(!d && DB[num]){
+    const r = DB[num];
+    const nights = Math.max(1,Math.round((new Date(r.cout)-new Date(r.cin))/(86400000)));
+    const sub = nights * r.rate;
+    const tax = sub * 0.15;
+    d = { num:r.num, name:r.name, room:r.room, cin:r.cin, cout:r.cout, nights, rate:r.rate, sub, tax, total:sub+tax, gen:new Date().toLocaleString('en-GB') };
+  }
+
+  hide(spin);
+  if(!d){ show(err,'Reservation not found.'); return; }
+
+  document.getElementById('b-gen').textContent    = 'Generated: '+d.gen;
+  document.getElementById('b-num').textContent    = d.num;
+  document.getElementById('b-guest').textContent  = d.name;
+  document.getElementById('b-room').textContent   = d.room;
+  document.getElementById('b-in').textContent     = d.cin;
+  document.getElementById('b-out').textContent    = d.cout;
+  document.getElementById('b-nights').textContent = d.nights+' night(s)';
+  document.getElementById('b-rate').textContent   = 'LKR '+Number(d.rate).toLocaleString();
+  document.getElementById('b-sub').textContent    = 'LKR '+Number(d.sub).toLocaleString();
+  document.getElementById('b-tax').textContent    = 'LKR '+Number(d.tax).toLocaleString();
+  document.getElementById('b-total').textContent  = 'LKR '+Number(d.total).toLocaleString();
+  wrap.classList.add('on');
+}
+
+// ── HELPERS ───────────────────────────────────────────
+function show(el, txt){ if(txt) el.textContent=txt; el.classList.add('on'); }
+function hide(el){ el.classList.remove('on'); }
+
+</script>
+</body>
+</html>
