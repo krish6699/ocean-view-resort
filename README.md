@@ -12,3 +12,5 @@ Version 1.3 - REST Controllers and Security Configuration added
 
 Version 1.4 - HTML Frontend completed with login and reservation tabs
 
+Version 1.5 - JUnit tests added for ReservationService
+
