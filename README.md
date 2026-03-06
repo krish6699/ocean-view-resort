@@ -8,3 +8,5 @@ Version 1.1 - Reservation entity and database configuration added
 
 Version 1.2 - Service layer and JWT authentication added
 
+Version 1.3 - REST Controllers and Security Configuration added
+
